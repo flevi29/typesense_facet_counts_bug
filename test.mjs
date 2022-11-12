@@ -13,6 +13,8 @@ const client = new Client({
 
 const COLL_NAME = "coll";
 
+const AUTHOR = "Szabó";
+
 await client
   .collections()
   .create({
@@ -26,14 +28,15 @@ await client
   });
 
 await client.collections(COLL_NAME).documents().create({
-  authors: ["Szabó"],
+  authors: [AUTHOR],
 });
 
 const res = await client.collections(COLL_NAME).documents().search({
     q: "*",
     query_by: "authors",
     facet_by: "authors",
-    facet_query: "authors:=Szabó",
+    facet_query: `authors:=${AUTHOR}`,
 });
 
+console.log(`Searching in authors facet: ${AUTHOR}`);
 console.log(res.facet_counts[0].counts[0]);
